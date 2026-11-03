@@ -7,155 +7,231 @@
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    min-height: 100vh;
-    padding: 40px 15px;
+    background: #f3f4fb;
     color: #333;
+    min-height: 100vh;
+    padding: 30px 15px;
+}
+
+/* Main Header */
+
+.main-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.main-header h1 {
+    color: #4935a5;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.main-header p {
+    color: #777;
+    font-size: 15px;
 }
 
 /* Registration Card */
 
 .container {
+    max-width: 550px;
     width: 100%;
-    max-width: 480px;
-    margin: 20px auto 40px;
+    margin: auto;
     background: white;
     padding: 35px;
-    border-radius: 18px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
 }
 
-h2 {
+.form-header,
+.table-header {
     text-align: center;
-    color: #4834a0;
     margin-bottom: 25px;
-    font-size: 25px;
 }
 
-/* Labels */
+.form-header h2,
+.table-header h2 {
+    color: #4935a5;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
 
-label {
-    display: block;
-    margin-top: 16px;
-    margin-bottom: 7px;
-    font-weight: 600;
-    color: #444;
+.form-header p,
+.table-header p {
+    color: #888;
     font-size: 14px;
 }
 
-/* Input Fields */
+/* Form Fields */
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #444;
+}
 
 input {
     width: 100%;
-    padding: 13px;
+    padding: 13px 15px;
     border: 1px solid #ddd;
-    border-radius: 9px;
-    font-size: 15px;
+    border-radius: 8px;
+    background: #f9faff;
+    font-size: 14px;
     outline: none;
     transition: 0.3s;
-    background: #f9faff;
 }
 
 input:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 8px rgba(102,126,234,0.3);
+    border-color: #6654d9;
     background: white;
+    box-shadow: 0 0 7px rgba(102,84,217,0.2);
 }
 
 /* Buttons */
 
-button {
-    width: 48%;
-    padding: 13px;
+.button-group {
+    display: flex;
+    gap: 12px;
     margin-top: 25px;
+}
+
+button {
+    flex: 1;
+    padding: 14px;
     border: none;
-    border-radius: 9px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 8px;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
 }
 
-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(102,126,234,0.4);
+.submit-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-.reset {
+.reset-btn {
     background: #e74c3c;
 }
 
-.reset:hover {
-    background: #c0392b;
+.submit-btn:hover,
+.reset-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
 }
 
-/* Success Message */
+/* Messages */
 
 .message {
+    padding: 12px;
     text-align: center;
-    color: #159957;
-    font-weight: bold;
-    margin-bottom: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 14px;
 }
 
-/* Employee Table Card */
+.success {
+    color: #16834b;
+    background: #e4f8ed;
+}
+
+.error {
+    color: #c0392b;
+    background: #fde8e7;
+}
+
+/* Employee Table */
 
 .table-container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 35px auto;
+    max-width: 1250px;
+    margin: 45px auto 20px;
     background: white;
     padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.table-responsive {
+    width: 100%;
     overflow-x: auto;
 }
 
-.table-container h2 {
-    color: #4834a0;
-    margin-bottom: 25px;
-}
-
-/* Table */
-
 table {
     width: 100%;
+    min-width: 850px;
     border-collapse: collapse;
-    background: white;
-    min-width: 750px;
+}
+
+thead {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
 }
 
 th {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
     padding: 16px 12px;
-    font-size: 14px;
+    font-size: 13px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 td {
-    padding: 14px 12px;
+    padding: 15px 12px;
     text-align: center;
     border-bottom: 1px solid #eee;
     font-size: 14px;
 }
 
-tr:nth-child(even) {
-    background: #f5f6ff;
+tbody tr:nth-child(even) {
+    background: #f8f8ff;
 }
 
-tr:hover {
-    background: #e9ecff;
-    transition: 0.3s;
+tbody tr:hover {
+    background: #eeeeff;
 }
 
-/* Mobile Responsive */
+.employee-name {
+    font-weight: 600;
+    color: #4935a5;
+}
+
+.department {
+    background: #eeeaff;
+    color: #6246c7;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.salary {
+    color: #159957;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.no-data {
+    padding: 25px;
+    color: #888;
+}
+
+/* Responsive Design */
 
 @media (max-width: 600px) {
+
     body {
-        padding: 15px 10px;
+        padding: 20px 10px;
+    }
+
+    .main-header h1 {
+        font-size: 24px;
     }
 
     .container {
@@ -163,10 +239,14 @@ tr:hover {
     }
 
     .table-container {
-        padding: 15px;
+        padding: 18px;
     }
 
-    h2 {
-        font-size: 21px;
+    .button-group {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
     }
 }

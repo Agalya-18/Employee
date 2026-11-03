@@ -1,8 +1,8 @@
-
 <?php
 include 'db.php';
 
 $message = "";
+$message_type = "";
 
 if (isset($_POST['submit'])) {
 
@@ -20,77 +20,119 @@ if (isset($_POST['submit'])) {
     $stmt = mysqli_prepare($conn, $sql);
 
     if (!$stmt) {
-        die("SQL Error: " . mysqli_error($conn));
-    }
-
-    mysqli_stmt_bind_param(
-        $stmt,
-        "sssssd",
-        $name,
-        $email,
-        $phone,
-        $department,
-        $designation,
-        $salary
-    );
-
-    if (mysqli_stmt_execute($stmt)) {
-        $message = "Employee details inserted successfully!";
+        $message = "Database Error: " . mysqli_error($conn);
+        $message_type = "error";
     } else {
-        $message = "Error: " . mysqli_stmt_error($stmt);
-    }
 
-    mysqli_stmt_close($stmt);
+        mysqli_stmt_bind_param(
+            $stmt,
+            "sssssd",
+            $name,
+            $email,
+            $phone,
+            $department,
+            $designation,
+            $salary
+        );
+
+        if (mysqli_stmt_execute($stmt)) {
+            $message = "Employee registered successfully!";
+            $message_type = "success";
+        } else {
+            $message = "Error: " . mysqli_stmt_error($stmt);
+            $message_type = "error";
+        }
+
+        mysqli_stmt_close($stmt);
+    }
 }
 
-$result = mysqli_query($conn, "SELECT * FROM employees");
+$result = mysqli_query(
+    $conn,
+    "SELECT * FROM employees ORDER BY id DESC"
+);
+
+if (!$result) {
+    die("Database Error: " . mysqli_error($conn));
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Employee Registration</title>
+    <title>Employee Management System</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
+<div class="main-header">
+    <h1>Employee Management System</h1>
+    <p>Register and manage employee information easily</p>
+</div>
+
 <div class="container">
 
-    <h2>Employee Registration Form</h2>
+    <div class="form-header">
+        <h2>Employee Registration</h2>
+        <p>Enter the employee details below</p>
+    </div>
 
-    <p class="message">
-        <?php echo htmlspecialchars($message); ?>
-    </p>
+    <?php if ($message != "") { ?>
+        <div class="message <?php echo $message_type; ?>">
+            <?php echo htmlspecialchars($message); ?>
+        </div>
+    <?php } ?>
 
     <form method="POST" action="">
 
-        <label>Employee Name</label>
-        <input type="text" name="name" required>
+        <div class="form-group">
+            <label>Employee Name</label>
+            <input type="text" name="name"
+                   placeholder="Enter employee name" required>
+        </div>
 
-        <label>Email</label>
-        <input type="email" name="email" required>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email"
+                   placeholder="Enter email address" required>
+        </div>
 
-        <label>Phone Number</label>
-        <input type="text" name="phone" required>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" name="phone"
+                   placeholder="Enter phone number" required>
+        </div>
 
-        <label>Department</label>
-        <input type="text" name="department" required>
+        <div class="form-group">
+            <label>Department</label>
+            <input type="text" name="department"
+                   placeholder="Enter department" required>
+        </div>
 
-        <label>Designation</label>
-        <input type="text" name="designation" required>
+        <div class="form-group">
+            <label>Designation</label>
+            <input type="text" name="designation"
+                   placeholder="Enter designation" required>
+        </div>
 
-        <label>Salary</label>
-        <input type="number" name="salary"
-               step="0.01" min="0" required>
+        <div class="form-group">
+            <label>Salary (₹)</label>
+            <input type="number" name="salary"
+                   placeholder="Enter salary"
+                   step="0.01" min="0" required>
+        </div>
 
-        <button type="submit" name="submit">
-            Submit
-        </button>
+        <div class="button-group">
+            <button type="submit" name="submit" class="submit-btn">
+                Register Employee
+            </button>
 
-        <button type="reset" class="reset">
-            Reset
-        </button>
+            <button type="reset" class="reset-btn">
+                Reset
+            </button>
+        </div>
 
     </form>
 
@@ -99,35 +141,74 @@ $result = mysqli_query($conn, "SELECT * FROM employees");
 
 <div class="table-container">
 
-    <h2>Employee Details</h2>
+    <div class="table-header">
+        <h2>Employee Details</h2>
+        <p>View all registered employees</p>
+    </div>
 
-    <table>
+    <div class="table-responsive">
 
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Department</th>
-            <th>Designation</th>
-            <th>Salary</th>
-        </tr>
+        <table>
 
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Employee Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
 
-        <tr>
-            <td><?php echo $row['id']; ?></td>
-            <td><?php echo htmlspecialchars($row['name']); ?></td>
-            <td><?php echo htmlspecialchars($row['email']); ?></td>
-            <td><?php echo htmlspecialchars($row['phone']); ?></td>
-            <td><?php echo htmlspecialchars($row['department']); ?></td>
-            <td><?php echo htmlspecialchars($row['designation']); ?></td>
-            <td><?php echo $row['salary']; ?></td>
-        </tr>
+            <tbody>
 
-        <?php } ?>
+                <?php if (mysqli_num_rows($result) > 0) { ?>
 
-    </table>
+                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['id']); ?></td>
+
+                        <td class="employee-name">
+                            <?php echo htmlspecialchars($row['first_name']); ?>
+                        </td>
+
+                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+
+                        <td><?php echo htmlspecialchars($row['phone']); ?></td>
+
+                        <td>
+                            <span class="department">
+                                <?php echo htmlspecialchars($row['department']); ?>
+                            </span>
+                        </td>
+
+                        <td><?php echo htmlspecialchars($row['designation']); ?></td>
+
+                        <td class="salary">
+                            ₹<?php echo number_format((float)$row['salary'], 2); ?>
+                        </td>
+                    </tr>
+
+                    <?php } ?>
+
+                <?php } else { ?>
+
+                    <tr>
+                        <td colspan="7" class="no-data">
+                            No employee records found.
+                        </td>
+                    </tr>
+
+                <?php } ?>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
